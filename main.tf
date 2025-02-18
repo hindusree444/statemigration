@@ -1,20 +1,21 @@
 terraform {
   backend "gcs" {
-    bucket = "terraform-statemigration"
-    credentials = "C:/Users/hr352/Downloads/devops-e2e-workflow-d3118db42e64.json"
+    bucket      = "migrationbucket1"   # GCS bucket name
+    prefix      = "terraform/state"                # Path to store the state file within the bucket (optional)
+    credentials = "C:/Users/hr352/Downloads/statemigration-152f2dfa7870.json" # Path to your service account credentials file
   }
 }
 
-
 provider "google" {
-  project = "devops-e2e-workflow"
-  region  = "us-central1"  # region for other resources (not the instance directly)
+  project = "statemigration"
+  region  = "us-central1"
+  credentials = "C:/Users/hr352/Downloads/statemigration-152f2dfa7870.json"
 }
 
 resource "google_compute_instance" "vm_instance" {
   name         = "my-vm"
   machine_type = "e2-medium"
-  zone         = "us-central1-f"  # Specify the zone where the instance will be created
+  zone         = "us-central1-a"  # Specify the zone where the instance will be created
 
   boot_disk {
     initialize_params {
@@ -30,4 +31,3 @@ resource "google_compute_instance" "vm_instance" {
     }
   }
 }
-#
